@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>EatWise | Create Account</title>
+  <link rel="stylesheet" href="../styles/style.css" />
+</head>
+
+<body>
+
+  <!-- Floating food icons (optional, for animation) -->
+  <div class="floating-icons">
+    <span class="veg">🥕</span>
+    <span class="veg">🥦</span>
+    <span class="junk">🍔</span>
+    <span class="junk">🍟</span>
+  </div>
+
+  <!-- Auth Card -->
+  <div class="auth-container">
+    <h1>Welcome to <span>EatWise</span></h1>
+    <p class="tagline">Know your food. Choose wisely.</p>
+
+    <!-- ✅ SIGNUP FORM -->
+    <form id="signupForm">
+
+      <input type="email" id="email" placeholder="Email ID" required />
+
+      <input type="password" id="password" placeholder="Password" required />
+
+      <button type="submit">Create Account</button>
+
+    </form>
+
+    <!-- Login Redirect -->
+    <p class="login-text">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </p>
+
+    <!-- Message output -->
+    <p id="msg"></p>
+  </div>
+
+  <!-- ✅ VERY IMPORTANT: SCRIPT LOADED AT END -->
+  <script src="../scripts/signup.js"></script>
+
+
+
+</body>
+
+</html>

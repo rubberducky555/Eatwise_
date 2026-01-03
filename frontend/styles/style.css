@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, #d4f8e8, transparent 40%),
+    radial-gradient(circle at bottom right, #ffe0b2, transparent 45%),
+    linear-gradient(135deg, #eafff3, #fff6eb);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* 🌟 Floating Food Container */
+.floating-icons span {
+  position: absolute;
+  bottom: -100px;
+  font-size: 60px; /* BIGGER */
+  opacity: 0;
+  animation: floatPop 10s infinite ease-in-out;
+}
+
+/* Veggies */
+.veg {
+  filter: drop-shadow(0 10px 10px rgba(46, 204, 113, 0.4));
+}
+
+/* Junk Food */
+.junk {
+  filter: drop-shadow(0 10px 10px rgba(231, 76, 60, 0.4));
+}
+
+/* Random positions */
+.floating-icons span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.floating-icons span:nth-child(2) { left: 25%; animation-delay: 2s; }
+.floating-icons span:nth-child(3) { left: 40%; animation-delay: 4s; }
+.floating-icons span:nth-child(4) { left: 60%; animation-delay: 1s; }
+.floating-icons span:nth-child(5) { left: 75%; animation-delay: 3s; }
+
+/* ✨ Floating + Pop Animation */
+@keyframes floatPop {
+  0% {
+    transform: translateY(0) scale(0.2);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-150px) scale(1.2);
+  }
+  50% {
+    transform: translateY(-350px) scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-650px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* 🔐 Auth Box */
+.auth-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  width: 380px;
+  border-radius: 22px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+  text-align: center;
+  z-index: 10;
+  animation: cardPop 0.8s ease;
+}
+
+/* Card entry animation */
+@keyframes cardPop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.auth-container h1 {
+  margin-bottom: 6px;
+}
+
+.auth-container h1 span {
+  color: #2ecc71;
+}
+
+.tagline {
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 12px 0;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #2ecc71;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(46, 204, 113, 0.4);
+}
+
+/* Login text */
+.login-text {
+  margin-top: 18px;
+  font-size: 14px;
+}
+
+.login-text a {
+  color: #27ae60;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#msg {
+  margin-top: 12px;
+  font-size: 14px;
+}

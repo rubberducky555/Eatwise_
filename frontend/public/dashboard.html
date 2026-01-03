@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>EatWise | AI Health Dashboard</title>
+  <link rel="stylesheet" href="../styles/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="logo">🍏 EatWise</h2>
+
+      <button class="nav-btn active" data-view="assistant">🤖 Assistant</button>
+      <button class="nav-btn" data-view="discover">✨ Discover</button>
+      <button class="nav-btn" data-view="calories">🔥 Calories</button>
+      <button class="nav-btn" data-view="profile">👤 Profile</button>
+
+      <button id="darkToggle" class="dark-btn">🌙 Dark Mode</button>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <h2>Welcome! 👋</h2>
+      </header>
+
+      <!-- ASSISTANT -->
+      <!-- ASSISTANT -->
+      <section id="assistant" class="view active">
+        <div class="assistant-modern-container">
+
+          <!-- Chat Interface -->
+          <div class="chat-interface-card">
+
+            <!-- Header -->
+            <div class="chat-header-modern">
+              <div class="ai-avatar-wrapper">
+                <div class="ai-avatar">🤖</div>
+                <div class="status-dot"></div>
+              </div>
+              <div class="header-info">
+                <h3>EatWise Assistant</h3>
+                <span class="status-text">Online & Ready</span>
+              </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="chatArea" class="chat-area-modern">
+              <!-- Dynamic messages will appear here -->
+            </div>
+
+            <!-- Upload & Input Zone -->
+            <div class="interaction-zone">
+
+              <!-- File Upload Wrapper -->
+              <div class="upload-wrapper" id="uploadBox">
+                <input type="file" id="foodImage" accept="image/*" hidden />
+                <button id="uploadBtn" class="ocr-scanner-btn" title="Scan Food Label">
+                  <span class="scanner-icon">📸</span>
+                  <span class="scanner-text">SCANNER</span>
+                </button>
+              </div>
+
+              <!-- Text Input -->
+              <div class="input-wrapper">
+                <input type="text" id="userInput" placeholder="Type a message or scan food..." />
+                <button id="sendBtn" class="send-btn-modern">➤</button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Quick Actions Panel -->
+          <div class="actions-panel">
+            <button id="addToTracker" class="action-btn-modern primary">
+              <span>🔥</span> Add Result to Tracker
+            </button>
+            <button id="smartSnackBtn" class="action-btn-modern secondary" style="display:none">
+              <span>🥗</span> Get Smart Snack Suggestion
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+
+      <section id="discover" class="view">
+        <h2>🔍 Discover - Your Personalized Hub</h2>
+        <div class="discover-container">
+          <!-- AI Hero Card -->
+          <div class="discover-hero-card">
+            <div class="hero-content">
+              <h3>🎯 Your Personalized Insights</h3>
+              <p id="personalizedGreeting" class="hero-description">Get AI-powered nutrition recommendations tailored
+                to your health profile</p>
+              <button id="generateInsightsBtn" class="insights-btn">
+                <span>✨</span> Generate AI Insights
+              </button>
+            </div>
+            <div id="aiInsightsContainer" class="ai-insights" style="display: none;"></div>
+          </div>
+          <!-- Main 3-Column Grid -->
+          <div class="discover-main-grid">
+
+            <!-- Today's Progress Card (moved to first position) -->
+            <div class="discover-card focus-card">
+              <div class="card-header-discover">
+                <h4>📊 Today's Progress</h4>
+              </div>
+              <div id="todayFocusContent" class="card-content-discover">
+                <div class="focus-stat">
+                  <span class="stat-label">Calories</span>
+                  <span class="stat-value" id="focusCalories">0 / 2000</span>
+                </div>
+                <div class="focus-stat">
+                  <span class="stat-label">Protein</span>
+                  <span class="stat-value" id="focusProtein">0g / 150g</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Disease-Specific Tips Card (second position) -->
+            <div class="discover-card tips-card">
+              <div class="card-header-discover">
+                <h4>💊 Health Tips for You</h4>
+                <button id="refreshTipsBtn" class="icon-btn-discover" title="Refresh">🔄</button>
+              </div>
+              <div id="diseaseTipsContent" class="card-content-discover">
+                <p class="loading-text">Generating tips...</p>
+              </div>
+            </div>
+
+          </div>
+          <!-- Smart Snacks Section -->
+          <div class="discover-section">
+            <div class="section-header-discover">
+              <h3>🥙 Smart Snack Suggestions</h3>
+              <button id="generateSnacksBtn" class="ai-btn-small">
+                <span>🤖</span> AI Suggestions
+              </button>
+            </div>
+            <div id="smartSnacksGrid" class="smart-snacks-grid">
+              <!-- Dynamically filled -->
+            </div>
+          </div>
+          <!-- Recipes Section -->
+          <div class="discover-section">
+            <div class="section-header-discover">
+              <h3>🍽️ Recommended Recipes</h3>
+              <button id="generateRecipesBtn" class="ai-btn-small">
+                <span>✨</span> Get Recipes
+              </button>
+            </div>
+            <div id="recipesGrid" class="recipes-grid">
+              <!-- Dynamically filled -->
+            </div>
+          </div>
+          <!-- Health Facts Carousel -->
+          <div class="discover-section">
+            <h3>💡 Did You Know?</h3>
+            <div id="healthFactsCarousel" class="health-facts-carousel">
+              <!-- Dynamically filled -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALORIES -->
+      <section id="calories" class="view">
+        <h2>🔥 Calorie & Weight Tracker</h2>
+
+        <!-- Weight Goal Section -->
+        <div class="weight-goal-card">
+          <h3>🎯 Your Weight Goal</h3>
+
+          <div class="goal-grid">
+            <div class="goal-input-group">
+              <label>Current Weight (kg)</label>
+              <input type="number" id="currentWeight" placeholder="70" step="0.1" />
+            </div>
+
+            <div class="goal-input-group">
+              <label>Target Weight (kg)</label>
+              <input type="number" id="targetWeight" placeholder="65" step="0.1" />
+            </div>
+
+            <div class="goal-input-group">
+              <label>Time Frame (weeks)</label>
+              <input type="number" id="timeFrame" placeholder="12" min="1" />
+            </div>
+
+            <div class="goal-input-group">
+              <label>Activity Level</label>
+              <select id="activityLevel">
+                <option value="1.2">Sedentary (little or no exercise)</option>
+                <option value="1.375">Light (exercise 1-3 days/week)</option>
+                <option value="1.55" selected>Moderate (exercise 3-5 days/week)</option>
+                <option value="1.725">Active (exercise 6-7 days/week)</option>
+                <option value="1.9">Very Active (intense exercise daily)</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="calculateGoal" class="calculate-btn">Calculate My Plan</button>
+
+          <!-- Results Display -->
+          <div id="goalResults" class="goal-results" style="display: none;">
+            <div class="result-cards">
+              <div class="result-card">
+                <div class="result-icon">📊</div>
+                <div class="result-content">
+                  <span class="result-label">Goal Type</span>
+                  <span class="result-value" id="goalType">-</span>
+                </div>
+              </div>
+
+              <div class="result-card">
+                <div class="result-icon">⚖️</div>
+                <div class="result-content">
+                  <span class="result-label">Weight Change</span>
+                  <span class="result-value" id="weightChange">-</span>
+                </div>
+              </div>
+
+              <div class="result-card highlight">
+                <div class="result-icon">🔥</div>
+                <div class="result-content">
+                  <span class="result-label">Maintenance Calories</span>
+                  <span class="result-value" id="maintenanceCal">-</span>
+                </div>
+              </div>
+
+              <div class="result-card primary">
+                <div class="result-icon">🎯</div>
+                <div class="result-content">
+                  <span class="result-label">Target Calories</span>
+                  <span class="result-value" id="targetCal">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="recommendation">
+              <h4>💡 Your Personalized Plan</h4>
+              <p id="recommendationText"></p>
+              <div class="macro-targets">
+                <div class="macro-target">
+                  <span class="macro-icon">🥩</span>
+                  <span class="macro-label">Protein</span>
+                  <span class="macro-value" id="proteinTarget">-</span>
+                </div>
+                <div class="macro-target">
+                  <span class="macro-icon">🍚</span>
+                  <span class="macro-label">Carbs</span>
+                  <span class="macro-value" id="carbsTarget">-</span>
+                </div>
+                <div class="macro-target">
+                  <span class="macro-icon">🥑</span>
+                  <span class="macro-label">Fat</span>
+                  <span class="macro-value" id="fatTarget">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Tracking -->
+        <div class="today-tracking">
+          <div class="tracking-header">
+            <h3>📊 Today's Intake</h3>
+            <button id="resetDay" class="reset-btn">Reset Day</button>
+          </div>
+
+          <div id="calorieSummary" class="calorie-summary-modern"></div>
+
+          <div class="progress-bars">
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Calories</span>
+                <span id="calorieProgress">0 / 2000 kcal</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill calories" id="calorieBar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Protein</span>
+                <span id="proteinProgress">0 / 150 g</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill protein" id="proteinBar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Carbs</span>
+                <span id="carbsProgress">0 / 250 g</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill carbs" id="carbsBar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Fat</span>
+                <span id="fatProgress">0 / 65 g</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill fat" id="fatBar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-wrapper-modern">
+          <div class="chart-card">
+            <h4>Calorie Distribution</h4>
+            <div class="chart-container">
+              <canvas id="calorieChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h4>Macro Breakdown</h4>
+            <div class="chart-container">
+              <canvas id="macroChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Food Entry Form -->
+        <div class="manual-entry-card">
+          <h3>➕ Add Food Entry</h3>
+          <form id="manualFoodForm" class="manual-food-form">
+            <div class="form-row">
+              <div class="form-group food-name-group">
+                <label>Food Name</label>
+                <div class="food-name-input-wrapper">
+                  <input type="text" id="manualFoodName" placeholder="e.g., Grilled Chicken" required />
+                  <button type="button" id="autoFillBtn" class="auto-fill-btn">
+                    <span>🤖</span> Auto-Fill with AI
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Calories</label>
+                <input type="number" id="manualCalories" placeholder="Auto-filled by AI" min="0" />
+              </div>
+
+              <div class="form-group">
+                <label>Protein (g)</label>
+                <input type="number" id="manualProtein" placeholder="Auto-filled by AI" min="0" step="0.1" />
+              </div>
+
+              <div class="form-group">
+                <label>Carbs (g)</label>
+                <input type="number" id="manualCarbs" placeholder="Auto-filled by AI" min="0" step="0.1" />
+              </div>
+
+              <div class="form-group">
+                <label>Fat (g)</label>
+                <input type="number" id="manualFat" placeholder="Auto-filled by AI" min="0" step="0.1" />
+              </div>
+            </div>
+
+            <div class="form-row-secondary">
+              <div class="form-group">
+                <label>Meal Type</label>
+                <select id="manualMealType">
+                  <option value="breakfast">Breakfast</option>
+                  <option value="lunch">Lunch</option>
+                  <option value="snack">Snack</option>
+                  <option value="dinner">Dinner</option>
+                </select>
+              </div>
+
+              <button type="submit" class="add-entry-btn">
+                <span>➕</span> Add Entry
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Food List -->
+        <div class="food-list-card">
+          <h3>🍽️ Foods Tracked Today</h3>
+          <ul id="calorieList" class="modern-food-list"></ul>
+          <p id="emptyState" class="empty-state">No foods tracked yet. Add items from the Assistant tab or use the form
+            above!</p>
+        </div>
+      </section>
+      <!-- PROFILE -->
+      <section id="profile" class="view">
+        <h2>👤 Profile & Settings</h2>
+
+        <!-- Profile Form Card -->
+        <div class="profile-form-card">
+          <h3>Personal Information</h3>
+          <form id="profileForm" class="profile-form">
+
+            <div class="profile-form-row">
+              <div class="profile-form-group">
+                <label for="profileName">Full Name</label>
+                <input type="text" id="profileName" placeholder="Enter your name" required />
+              </div>
+
+              <div class="profile-form-group">
+                <label for="profileAge">Age</label>
+                <input type="number" id="profileAge" placeholder="25" min="1" max="120" required />
+              </div>
+            </div>
+
+            <div class="profile-form-row">
+              <div class="profile-form-group">
+                <label for="profileGender">Gender</label>
+                <select id="profileGender" required>
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+
+              <div class="profile-form-group">
+                <label for="profileHeight">Height (cm)</label>
+                <input type="number" id="profileHeight" placeholder="e.g. 175" required />
+              </div>
+            </div>
+
+            <div class="profile-form-row">
+              <div class="profile-form-group">
+                <label for="profileWeight">Weight (kg)</label>
+                <input type="number" id="profileWeight" placeholder="e.g. 70" required />
+              </div>
+              <div class="profile-form-group">
+                <label for="profileDiseases">Health Conditions</label>
+                <input type="text" id="profileDiseases" placeholder="e.g., Diabetes, Hypertension (optional)" />
+              </div>
+            </div>
+
+            <!-- BMI Result Section -->
+            <div id="bmiContainer" class="bmi-result-card" style="display:none">
+              <div class="bmi-score">
+                <span class="bmi-label">BMI Score</span>
+                <span id="bmiValue" class="bmi-number">--</span>
+              </div>
+              <div class="bmi-category">
+                <span id="bmiCategoryText">--</span>
+                <p id="bmiDescription" class="bmi-desc">--</p>
+              </div>
+            </div>
+
+            <div class="profile-form-actions">
+              <button type="submit" class="save-profile-btn">
+                <span>💾</span> Save Profile
+              </button>
+              <button type="button" id="logoutBtn" class="logout-btn-profile">
+                <span>🚪</span> Logout
+              </button>
+            </div>
+          </form>
+
+          <div id="profileSaveMessage" class="profile-message" style="display: none;"></div>
+        </div>
+
+      </section>
+
+
+      <script src="../scripts/dashboard.js"></script>
+      <script src="../scripts/discover.js"></script>
+      <script src="../scripts/profile.js"></script>
+</body>
+
+</html>
